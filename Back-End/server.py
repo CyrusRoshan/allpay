@@ -37,6 +37,10 @@ def getDecryptedData(walletID, data, key):
 def index():
     return "Node.js is the only real dev language"
 
+@app.route('/getSome')
+def getSome():
+    return request.args.get("test")
+
 # uploads a decryptor function generator to the server
 
 @app.route('/uploadDecryptor')
@@ -50,10 +54,11 @@ def uploadDecrypter():
 @app.route('/callVantiv')
 def callVantiv():
   encrypted = request.args.get('encrypted', False)
-  if (encrypted is "False" or encrypted is False):
-    chString, pString, edString = request.args.get('chString', '5499990123456781'),
-                                  request.args.get('pString', '2.00'),
-                                  request.args.get('edString', '0816')
+  if (encrypted == "False" or encrypted == False):
+    return str(1)
+    cnString = request.args.get('cnString', '5499990123456781')
+    pString = request.args.get('pString', '2.00')
+    edString = request.args.get('edString', '0816')
   else: 
     data = request.args.get('data')
     key = request.args.get('key')
@@ -61,7 +66,7 @@ def callVantiv():
     decryptedData = getDecryptedData(walletID, data, key)
     cnString, pString, edString = decryptedData[0], decryptedData[1], decryptedData[2]
   outcome = transact(cnString, pString, edString)
-  return outcome
+  return str(outcome)
 
 if __name__ == "__main__":
     app.run()
