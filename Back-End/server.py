@@ -49,11 +49,17 @@ def uploadDecrypter():
 
 @app.route('/callVantiv')
 def callVantiv():
-  data = request.args.get('data')
-  key = request.args.get('key')
-  walletID = request.args.get('walletID')
-  decryptedData = getDecryptedData(walletID, data, key)
-  cnString, pString, edString = decryptedData[0], decryptedData[1], decryptedData[2]
+  encrypted = request.args.get('encrypted', False)
+  if (encrypted is "False" or encrypted is False):
+    chString, pString, edString = request.args.get('chString', '5499990123456781'),
+                                  request.args.get('pString', '2.00'),
+                                  request.args.get('edString', '0816')
+  else: 
+    data = request.args.get('data')
+    key = request.args.get('key')
+    walletID = request.args.get('walletID')
+    decryptedData = getDecryptedData(walletID, data, key)
+    cnString, pString, edString = decryptedData[0], decryptedData[1], decryptedData[2]
   outcome = transact(cnString, pString, edString)
   return outcome
 
