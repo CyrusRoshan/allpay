@@ -10,9 +10,9 @@ input_request = {
 "ExpDate":"0816",
 "OperatorID":"money2020",
 }
-def transact(cardNumber, purchase, ExpDateString):
-	input_request["AcctNo"] = cardNumber
-	input_request["Purchase"] = purchase
+def transact(cardNumberstring, purchasestring, ExpDateString):
+	input_request["AcctNo"] = cardNumberstring
+	input_request["Purchase"] = purchasestring
 	input_request["ExpDate"] = ExpDateString
 	headers = {
     'Content-Type': 'application/json',
@@ -20,4 +20,8 @@ def transact(cardNumber, purchase, ExpDateString):
 	}
 	info = requests.post('https://w1.mercurycert.net/PaymentsAPI/Credit/Sale', headers=headers, json = input_request)
 	parsed = info.json()
-	print(parsed)
+	if parsed["CmdStatus"] == "Approved":
+		return 1
+	else:
+
+		return 0
