@@ -23,5 +23,4 @@ def transact(cardNumberstring, purchasestring, ExpDateString):
 	if parsed["CmdStatus"] == "Approved":
 		return 1
 	else:
-
 		return 0
