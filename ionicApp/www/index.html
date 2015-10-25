@@ -5,22 +5,25 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 		<title></title>
 
-		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
+		<link href="lib/ionic/css/ionic.css?ionicCachebuster=8914" rel="stylesheet">
+		<link href="css/style.css?ionicCachebuster=8914" rel="stylesheet">
 
-		<script src="lib/ionic/js/ionic.bundle.js"></script>
-		<script src="cordova.js"></script>
+		<script src="lib/ionic/js/ionic.bundle.js?ionicCachebuster=8914"></script>
+		<script src="cordova.js?ionicCachebuster=8914"></script>
 
 		<!--		-->
 
-		<script src="js/jquery-2.1.4.min.js"></script>
+		<link href="css/style.css" rel="stylesheet">
 
-		<script src="js/format.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/doesStuff.js"></script>
+		<script src="js/jquery-2.1.4.min.js?ionicCachebuster=8914"></script>
+		<script src="js/Vanilla-Ice.js?ionicCachebuster=8914"></script>
+
+		<script src="js/format.js?ionicCachebuster=8914"></script>
+		<script src="js/app.js?ionicCachebuster=8914"></script>
+		<script src="js/doesStuff.js?ionicCachebuster=8914"></script>
 	</head>
 
-	<body>
+	<body ng-controller="MainCtrl">
 
 		<ion-nav-bar class="bar bar-positive">
 			<ion-nav-back-button class="button-icon ion-arrow-left-c">
@@ -46,9 +49,7 @@
 
 		<script id="templates/home.html" type="text/ng-template">
 			<ion-view view-title="Home">
-				<ion-content class="padding">
 
-				</ion-content>
 			</ion-view>
 		</script>
 
@@ -56,9 +57,94 @@
 		<script id="templates/settings.html" type="text/ng-template">
 			<ion-view title="Settings">
 				<ion-content>
+					<div class="list">
+						<div class="item item-divider">
+							Notifications
+						</div>
+						<li class="item item-toggle">
+							Phone Notifications
+							<label class="toggle toggle-positive">
+								<input type="checkbox">
+								<div class="track">
+									<div class="handle"></div>
+								</div>
+							</label>
+						</li>
+						<li class="item item-toggle">
+							Watch Notifications
+							<label class="toggle toggle-positive">
+								<input type="checkbox">
+								<div class="track">
+									<div class="handle"></div>
+								</div>
+							</label>
+						</li>
+						<div class="item item-divider">
+							Customization
+						</div>
+						<label class="item item-input item-select">
+							<div class="input-label">
+								Default Card
+							</div>
+							<select>
+								<option>Last Used</option>
+								<option selected>Most Used</option>
+							</select>
+						</label>
+						<li class="item item-toggle">
+							Autoselect Default Card
+							<label class="toggle toggle-positive">
+								<input type="checkbox">
+								<div class="track">
+									<div class="handle"></div>
+								</div>
+							</label>
+						</li>
+					</div>
 
+					<br>
+					<button class="button centerButton icon-top ion-card button-positive" ng-click="openModal(1)">
+						Cards
+					</button>
+					<button class="button centerButton icon-top ion-locked button-positive">
+						Security
+					</button>
 				</ion-content>
 			</ion-view>
+		</script>
+
+		<script id="cards.html" type="text/ng-template">
+			<ion-modal-view>
+				<ion-header-bar class="bar bar-header bar-positive">
+					<h1 class="title">Cards</h1>
+				</ion-header-bar>
+
+				<ion-content>
+					<ion-list show-delete="$root.modalModify[1]">
+						<ion-item class="item item-icon-left" href="#" ng-repeat="card in $root.cards" ng-class="{edit: $root.modalModify[1]}">
+							<ion-delete-button class="ion-minus-circled" ng-click="deleteCard(card)"></ion-delete-button>
+							<i class="icon ion-card"></i>
+							{{card.vendor}}
+							<span class="item-note">
+								{{card.number}}
+							</span>
+						</ion-item>
+					</ion-list>
+
+
+				</ion-content>
+
+				<ion-footer-bar class="bar bar-footer bar-positive">
+					<div class="button-bar">
+						<button class="button icon-left ion-close button-positive" ng-click="closeModal(1)">
+							Cancel
+						</button>
+						<button class="button icon-left ion-edit button-positive" ng-click="modifyModal(1)">
+							Edit
+						</button>
+					</div>
+				</ion-footer-bar>
+			</ion-modal-view>
 		</script>
 
 	</body>

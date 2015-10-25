@@ -1,2 +1,2 @@
-# Vanilla-Ice
-if there was a problem, yo I'll solve it
+# allpay
+a secure, extensible, client-side gateway for mobile wallets
