@@ -13,3 +13,11 @@
 .hide{
 	display: none;
 }
+
+.mainButtons{
+	border-radius: 300px;
+	border-bottom: 5px solid;
+	font-size: 21px;
+	height: 70px;
+	margin-bottom: 20px;
+}

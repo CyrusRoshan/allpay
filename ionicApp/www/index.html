@@ -36,11 +36,11 @@
 		<script id="templates/tabs.html" type="text/ng-template">
 			<ion-tabs class="tabs-icon-top tabs-background-positive tabs-color-light">
 
-				<ion-tab title="Home" icon="ion-card" href="#/tab/home">
+				<ion-tab title="Home" icon="ion-heart" href="#/tab/home">
 					<ion-nav-view name="home-tab"></ion-nav-view>
 				</ion-tab>
 
-				<ion-tab title="Settings" icon="ion-toggle-filled" ui-sref="tabs.settings">
+				<ion-tab title="Settings" icon="ion-gear-a" ui-sref="tabs.settings">
 					<ion-nav-view name="settings-tab"></ion-nav-view>
 				</ion-tab>
 
@@ -48,8 +48,21 @@
 		</script>
 
 		<script id="templates/home.html" type="text/ng-template">
-			<ion-view view-title="Home">
-
+			<ion-view view-title="AllPay">
+				<ion-content>
+					<br><br>
+					<button class="button centerButton mainButtons button-large button-positive" ng-click="openModal(3)">
+						Make a Payment
+					</button>
+					<br>
+					<button class="button centerButton mainButtons button-large button-positive" ng-click="">
+						Payment History
+					</button>
+					<br>
+					<button class="button centerButton mainButtons button-large button-positive" ng-click="">
+						Payment Statistics
+					</button>
+				</ion-content>
 			</ion-view>
 		</script>
 
@@ -126,7 +139,7 @@
 							<i class="icon ion-card"></i>
 							{{card.vendor}}
 							<span class="item-note">
-								{{card.number}}
+								***********{{card.number.toString().slice(12, 16)}}
 							</span>
 						</ion-item>
 					</ion-list>
@@ -164,7 +177,7 @@
 						</div>
 						<li class="item item-toggle">
 							Use PIN to open app
-							<label class="toggle toggle-assertive">
+							<label class="toggle toggle-positive">
 								<input type="checkbox">
 								<div class="track">
 									<div class="handle"></div>
@@ -176,7 +189,7 @@
 						</div>
 						<li class="item item-toggle">
 							Allow insecure transmission
-							<label class="toggle toggle-assertive">
+							<label class="toggle toggle-positive">
 								<input type="checkbox">
 								<div class="track">
 									<div class="handle"></div>
@@ -194,7 +207,10 @@
 								<option>QR Code</option>
 							</select>
 						</label>
-
+						<br>
+						<button class="button centerButton icon-top button-positive" ng-click="">
+							Set up TouchID
+						</button>
 					</ul>
 				</ion-content>
 
@@ -205,6 +221,35 @@
 				</ion-footer-bar>
 			</ion-modal-view>
 		</script>
+
+		<script id="makePayment.html" type="text/ng-template">
+			<ion-modal-view>
+				<ion-header-bar class="bar bar-header bar-positive">
+					<h1 class="title">Make Payment</h1>
+				</ion-header-bar>
+				<ion-content>
+					<div class="selectCard" ng-class="{hide: $root.cardSelected}">
+						<div class="item item-divider">
+							Select a Card
+						</div>
+						<ion-item class="item item-icon-left" href="#" ng-click="selectCard(card)" ng-repeat="card in $root.cards" ng-class="{edit: $root.modalModify[1]}">
+							<i class="icon ion-card"></i>
+							{{card.vendor}}
+							<span class="item-note">
+								***********{{card.number.toString().slice(12, 16)}}
+							</span>
+						</ion-item>
+					</div>
+
+				</ion-content>
+				<ion-footer-bar class="bar button-bar bar-footer bar-positive">
+					<button class="button icon-left button-positive" ng-click="closeModal(3)">
+						Exit
+					</button>
+				</ion-footer-bar>
+			</ion-modal-view>
+		</script>
+
 	</body>
 
 </html>

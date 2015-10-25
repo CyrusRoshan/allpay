@@ -109,12 +109,25 @@ var utilities = angular.module('ionic.utils', [])
 		$scope.oModal2 = modal;
 	});
 
+	$ionicModal.fromTemplateUrl('makePayment.html', {
+		id: 'makePayment',
+		scope: $scope,
+		backdropClickToClose: false,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.oModal3 = modal;
+	});
+
 	$scope.openModal = function(index) {
 		if(index == 1){
 			$scope.oModal1.show();
 		}
-		else{
+		else if(index == 2){
 			$scope.oModal2.show();
+		}
+		else if(index == 3){
+			$rootScope.cardSelected = false;
+			$scope.oModal3.show();
 		}
 	};
 
@@ -133,38 +146,54 @@ var utilities = angular.module('ionic.utils', [])
 		if(index == 1){
 			$scope.oModal1.hide();
 		}
-		else{
+		else if(index == 2){
 			$scope.oModal2.hide();
+		}
+		else if(index == 3){
+			$scope.oModal3.hide();
 		}
 	};
 
 	$scope.$on('$destroy', function() {
 		$scope.oModal1.remove();
 		$scope.oModal2.remove();
+		$scope.oModal3.remove();
 	});
 
 	$scope.deleteCard = function(card){
 		$rootScope.cards.splice($rootScope.cards.indexOf(card), 1);
 	};
 
+	$scope.selectCard = function(card){
+		$rootScope.cardSelected = true;
+		$rootScope.selectedCard = card;
+	}
+
 	$rootScope.cards = [
 		{
-			vendor: "VISA",
-			number: 38183218138213,
-			cvv: 283
+			vendor: "Mastercard",
+			number: 5499990123456781
 		},
 
 		{
-			vendor: "AMEX",
-			number: 9232312312312,
-			cvv: 283
+			vendor: "Visa",
+			number: 4539957024259452,
 		},
 
 		{
-			vendor: "MCARD",
-			number: 527318138213,
-			cvv: 283
-		}
+			vendor: "Mastercard",
+			number: 5483558219303916,
+		},
+
+		{
+			vendor: "Visa",
+			number: 4929082154113334,
+		},
+
+		{
+			vendor: "Discover",
+			number: 6011264570504817,
+		},
 	]
 
 });
