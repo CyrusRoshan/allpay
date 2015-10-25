@@ -5,6 +5,7 @@
 from flask import Flask, request
 from flask_sockets import Sockets
 import json
+from api import *
 
 # setup
 
@@ -40,12 +41,23 @@ def index():
 
 # uploads a decryptor function generator to the server
 
-@app.route('/uploadDecryptor'):
+@app.route('/uploadDecryptor')
+def uploadDecrypter():
   identifier = request.args.get('walletID')
   content = request.args.get('function')
   filename = str(identifier) + ".txt"
   makeFile(filename)
   writeFile(filename, content)
+
+@app.route('/callVantiv')
+def callVantiv():
+  data = request.args.get('data')
+  key = request.args.get('key')
+  walletID = request.args.get('walletID')
+  decryptedData = getDecryptedData(walletID, data, key)
+  cnString, pString, edString = decryptedData[0], decryptedData[1], decryptedData[2]
+  outcome = transact(cnString, pString, edString)
+  return outcome
 
 if __name__ == "__main__":
     app.run()
