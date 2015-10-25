@@ -44,7 +44,7 @@ var utilities = angular.module('ionic.utils', [])
 
 })
 
-.controller('MainCtrl', function($scope, $interval, $rootScope, $ionicPopup) {
+.controller('MainCtrl', function($scope, $interval, $rootScope, $ionicPopup, $ionicModal) {
 	/*
 	payment data:
 		any data type
@@ -60,7 +60,8 @@ var utilities = angular.module('ionic.utils', [])
 
 	*/
 
-	$rootScope.ccVendor = function getMerchantProvider(cardNo){                      //cardNo is the credit card number
+	//cc validation here
+	$rootScope.ccVendor = function getMerchantProvider(cardNo){
 		var cards = new Array();
 		cards [0] = {cardName: "Visa",prefixes: "4"};
 		cards [1] = {cardName: "Mastercard", prefixes: "51,52,53,54,55"};
@@ -87,5 +88,83 @@ var utilities = angular.module('ionic.utils', [])
 		}
 		return "Invalid";
 	}
+
+
+	//modal stuff here
+	$ionicModal.fromTemplateUrl('cards.html', {
+		id: 'cards',
+		scope: $scope,
+		backdropClickToClose: false,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.oModal1 = modal;
+	});
+
+	$ionicModal.fromTemplateUrl('security.html', {
+		id: 'security',
+		scope: $scope,
+		backdropClickToClose: false,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.oModal2 = modal;
+	});
+
+	$scope.openModal = function(index) {
+		if(index == 1){
+			$scope.oModal1.show();
+		}
+		else{
+			$scope.oModal2.show();
+		}
+	};
+
+	$rootScope.modalModify = [];
+
+	$scope.modifyModal = function(index) {
+		if($rootScope.modalModify[index]){
+			$rootScope.modalModify[index] = false;
+		}
+		else{
+			$rootScope.modalModify[index]= true;
+		}
+	}
+
+	$scope.closeModal = function(index) {
+		if(index == 1){
+			$scope.oModal1.hide();
+		}
+		else{
+			$scope.oModal2.hide();
+		}
+	};
+
+	$scope.$on('$destroy', function() {
+		$scope.oModal1.remove();
+		$scope.oModal2.remove();
+	});
+
+	$scope.deleteCard = function(card){
+		$rootScope.cards.splice($rootScope.cards.indexOf(card), 1);
+	};
+
+	$rootScope.cards = [
+		{
+			vendor: "VISA",
+			number: 38183218138213,
+			cvv: 283
+		},
+
+		{
+			vendor: "AMEX",
+			number: 9232312312312,
+			cvv: 283
+		},
+
+		{
+			vendor: "MCARD",
+			number: 527318138213,
+			cvv: 283
+		}
+	]
 
 });
