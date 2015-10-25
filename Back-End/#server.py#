@@ -3,12 +3,14 @@
 # import statements
 
 from flask import Flask, request
+from flask_sockets import Sockets
 import json
 from api import *
 
 # setup
 
 app = Flask(__name__)
+sockets = Sockets(app)
 
 # helper functions
 
