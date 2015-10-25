@@ -1,5 +1,6 @@
 {
     "jscodehints.detectedExclusions": [
-        "/Users/CyrusRoshan/GitHub/Mine/Vanilla-Ice/ionicApp/www/js/controllers.js"
+        "/Users/CyrusRoshan/GitHub/Mine/Vanilla-Ice/ionicApp/www/js/controllers.js",
+        "/Users/CyrusRoshan/GitHub/Mine/Vanilla-Ice/ionicApp/www/js/allpay.js"
     ]
 }

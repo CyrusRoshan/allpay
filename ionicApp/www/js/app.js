@@ -1,5 +1,5 @@
 var temp;
-var app = angular.module('ionicApp', ['ionic', 'ionic.utils'])
+var app = angular.module('ionicApp', ['ionic', 'ionic.utils', 'ngCordova'])
 var utilities = angular.module('ionic.utils', [])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -44,7 +44,7 @@ var utilities = angular.module('ionic.utils', [])
 
 })
 
-.controller('MainCtrl', function($scope, $interval, $rootScope, $ionicPopup, $ionicModal) {
+.controller('MainCtrl', function($scope, $interval, $rootScope, $ionicPopup, $ionicModal, $cordovaTouchID, $ionicPlatform, $ionicPopup) {
 	/*
 	payment data:
 		any data type
@@ -90,6 +90,46 @@ var utilities = angular.module('ionic.utils', [])
 	}
 
 
+	$scope.verifyTransaction = function(){
+		$.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent($rootScope.ngrokURL) + '&callback=?', function(data){
+			console.log(data);
+			console.log(data.contents);
+			if(data.contents == 1){
+				var alertPopup = $ionicPopup.alert({
+					title: 'Transaction Complete',
+					template: 'Vendor has received your payment!'
+				});
+				alertPopup.then(function(res) {
+					$scope.closeModal(3);
+				});
+			}
+		});
+	}
+
+	$rootScope.ngrokURL = "http://795ce7cd.ngrok.io/directCall";
+
+	$rootScope.setupSecurity = function(){
+		var myPopup = $ionicPopup.show({
+			template: '<input type="text" ng-model="$root.ngrokURL">',
+			title: 'Enter server value',
+			scope: $rootScope,
+			buttons: [
+				{ text: 'Cancel' },
+				{
+					text: '<b>Save</b>',
+					type: 'button-positive',
+					onTap: function(e) {
+						if (!$rootScope.ngrokURL) {
+							e.preventDefault();
+						} else {
+							return $rootScope.ngrokURL;
+						}
+					}
+				}
+			]
+		});
+	}
+
 	//modal stuff here
 	$ionicModal.fromTemplateUrl('cards.html', {
 		id: 'cards',
@@ -118,6 +158,15 @@ var utilities = angular.module('ionic.utils', [])
 		$scope.oModal3 = modal;
 	});
 
+	$ionicModal.fromTemplateUrl('history.html', {
+		id: 'history',
+		scope: $scope,
+		backdropClickToClose: false,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.oModal4 = modal;
+	});
+
 	$scope.openModal = function(index) {
 		if(index == 1){
 			$scope.oModal1.show();
@@ -128,6 +177,9 @@ var utilities = angular.module('ionic.utils', [])
 		else if(index == 3){
 			$rootScope.cardSelected = false;
 			$scope.oModal3.show();
+		}
+		else if(index == 4){
+			$scope.oModal4.show();
 		}
 	};
 
@@ -152,12 +204,16 @@ var utilities = angular.module('ionic.utils', [])
 		else if(index == 3){
 			$scope.oModal3.hide();
 		}
+		else if(index == 4){
+			$scope.oModal4.hide();
+		}
 	};
 
 	$scope.$on('$destroy', function() {
 		$scope.oModal1.remove();
 		$scope.oModal2.remove();
 		$scope.oModal3.remove();
+		$scope.oModal4.remove();
 	});
 
 	$scope.deleteCard = function(card){
@@ -168,6 +224,7 @@ var utilities = angular.module('ionic.utils', [])
 		$rootScope.cardSelected = true;
 		$rootScope.selectedCard = card;
 	}
+
 
 	$rootScope.cards = [
 		{
@@ -196,4 +253,32 @@ var utilities = angular.module('ionic.utils', [])
 		},
 	]
 
+	$rootScope.history = [
+		{
+			date: "Oct 25, 2015",
+			pays: [
+				{
+					vendor: "Mastercard",
+					value: "$1.00",
+					number: 5499990123456781
+				},
+				{
+					vendor: "Mastercard",
+					value: "$1.00",
+					number: 5499990123456781
+				},
+				{
+					vendor: "Mastercard",
+					value: "$0.50",
+					number: 5499990123456781
+				},
+				{
+					vendor: "Mastercard",
+					value: "$2.00",
+					number: 5499990123456781
+				}
+			],
+
+		}
+	]
 });

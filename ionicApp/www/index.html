@@ -5,22 +5,23 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 		<title></title>
 
-		<link href="lib/ionic/css/ionic.css?ionicCachebuster=8914" rel="stylesheet">
-		<link href="css/style.css?ionicCachebuster=8914" rel="stylesheet">
+		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
 
-		<script src="lib/ionic/js/ionic.bundle.js?ionicCachebuster=8914"></script>
-		<script src="cordova.js?ionicCachebuster=8914"></script>
+		<script src="lib/ionic/js/ionic.bundle.js"></script>
+		<script src="cordova.js"></script>
 
 		<!--		-->
 
 		<link href="css/style.css" rel="stylesheet">
 
-		<script src="js/jquery-2.1.4.min.js?ionicCachebuster=8914"></script>
-		<script src="js/Vanilla-Ice.js?ionicCachebuster=8914"></script>
+		<script src="js/ng-cordova.min.js"></script>
 
-		<script src="js/format.js?ionicCachebuster=8914"></script>
-		<script src="js/app.js?ionicCachebuster=8914"></script>
-		<script src="js/doesStuff.js?ionicCachebuster=8914"></script>
+		<script src="js/jquery-2.1.4.min.js"></script>
+
+		<script src="js/format.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/doesStuff.js"></script>
 	</head>
 
 	<body ng-controller="MainCtrl">
@@ -48,14 +49,14 @@
 		</script>
 
 		<script id="templates/home.html" type="text/ng-template">
-			<ion-view view-title="AllPay">
+			<ion-view view-title="DemoWallet">
 				<ion-content>
 					<br><br>
 					<button class="button centerButton mainButtons button-large button-positive" ng-click="openModal(3)">
 						Make a Payment
 					</button>
 					<br>
-					<button class="button centerButton mainButtons button-large button-positive" ng-click="">
+					<button class="button centerButton mainButtons button-large button-positive" ng-click="openModal(4)">
 						Payment History
 					</button>
 					<br>
@@ -208,7 +209,7 @@
 							</select>
 						</label>
 						<br>
-						<button class="button centerButton icon-top button-positive" ng-click="">
+						<button class="button centerButton icon-top button-positive" ng-click="$root.setupSecurity()">
 							Set up TouchID
 						</button>
 					</ul>
@@ -241,10 +242,57 @@
 						</ion-item>
 					</div>
 
+					<div class="confirmVendor" ng-class="{hide: !$root.cardSelected}">
+						<div class="card">
+							<div class="item item-divider">
+								Confirm Vendor
+							</div>
+							<div class="item item-text-wrap">
+								Send payment to vendor with id "raspiDemoVendor"? <br>Using {{$root.selectedCard.vendor}} ***********{{$root.selectedCard.number.toString().slice(12, 16)}}
+							</div>
+						</div>
+
+						<button class="button centerButton icon-top ion-checkmark-circled button-positive" ng-click="verifyTransaction()">
+							Confirm
+						</button>
+						<button class="button centerButton icon-top ion-close-circled button-positive" ng-click="$root.cardSelected = false">
+							Cancel
+						</button>
+					</div>
+
 				</ion-content>
 				<ion-footer-bar class="bar button-bar bar-footer bar-positive">
 					<button class="button icon-left button-positive" ng-click="closeModal(3)">
 						Exit
+					</button>
+				</ion-footer-bar>
+			</ion-modal-view>
+		</script>
+
+
+		<script id="history.html" type="text/ng-template">
+			<ion-modal-view>
+				<ion-header-bar class="bar bar-header bar-positive">
+					<h1 class="title">Make Payment</h1>
+				</ion-header-bar>
+				<ion-content>
+					<div class = "payments" ng-repeat = "payment in $root.history">
+						<div class="item item-divider">
+							{{payment.date}}
+						</div>
+						<div class="item" ng-repeat = "payment in payment.pays">
+							<i href="#">
+								({{payment.value}}) {{payment.vendor}}
+							</i>
+							<span class="item-note">
+								***********{{payment.number.toString().slice(12, 16)}}
+							</span>
+						</div>
+					</div>
+				</ion-content>
+				<ion-footer-bar class="bar button-bar bar-footer bar-positive">
+					<button class="button icon-left button-positive" ng-click="closeModal(4)">
+						Back
 					</button>
 				</ion-footer-bar>
 			</ion-modal-view>
