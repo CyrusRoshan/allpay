@@ -26,7 +26,7 @@ def callVantiv():
   params['walletID'] = request.args.get('walletID')
   params['key'] = request.args.get('key')
   params['encrypted'] = request.args.get('encrypted', "True")
-  r = requests.get(url = #TODO/callVantiv, params = params)
+  r = requests.get(url = "http://172.0.0.1"/callVantiv, params = params)
   return r.text
 
 if __name__ == "__main__":
